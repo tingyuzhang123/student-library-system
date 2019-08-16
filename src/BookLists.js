@@ -6,28 +6,29 @@ export default class BookLists extends React.Component{
         this.state = {
             bookNumbers:[5,4,2,1],
             studentBookList:[{
-                name:this.props.studentName,
-                id:this.props.studentIndex,
-                book1:this.props.book1,
-                book2:this.props.book2,
-                book3: this.props.book3,
-                book4: this.props.book4}],
+                name:this.props.selectedStudentBookStatus['name'],
+                id:this.props.selectedStudentBookStatus['id'],
+                book1:this.props.selectedStudentBookStatus['book1'],
+                book2:this.props.selectedStudentBookStatus['book2'],
+                book3: this.props.selectedStudentBookStatus['book3'],
+                book4: this.props.selectedStudentBookStatus['book4']}],
         
 }}
-componentWillMount(){
+componentDidMount(){
+    
     let {bookNumbers}=this.state;
     let x=bookNumbers;
-    for (let item of this.props.studentBookStatus) {
-      
-        if(item['book1']===true && x[0]>0){
-            x[0]=x[0]-1}
-           if(item['book2']===true && x[1]>0){
-            x[1]=x[1]-1}
-              if(item['book3']===true && x[2]>0){
-                x[2]=x[2]-1}
-                if(item['book4']===true && x[3]>0){
-                    x[3]=x[3]-1}
-    }
+    Object.keys(this.props.studentBookStatus).forEach((element)=> {
+      alert(element['id'])
+        if(element['book1']===true && x[0]>0){
+            x[0]--;}
+           if(element['book2']===true && x[1]>0){
+            x[1]--;}
+              if(element['book3']===true && x[2]>0){
+                x[2]--;}
+                if(element['book4']===true && x[3]>0){
+                    x[3]--;}
+    });
     
     bookNumbers=x
     this.setState(bookNumbers);
@@ -37,26 +38,19 @@ componentWillMount(){
 selectedBookList=(event)=>{
     let {studentBookList}=this.state;
    if (event.target.value==='book1'){
-    this.setState({ studentBookList: {book1:true}
-    //isBook1:!this.state.isBook1
-});}
-  else if (event.target.value==='book2')
-  {
-    this.setState({ studentBookList: {book2:true}
-    //isBook1:!this.state.isBook1
-});}
-else if (event.target.value==='book3')
-{
-  this.setState({ studentBookList: {book3:true}
-  //isBook1:!this.state.isBook1
-});}
-else if (event.target.value==='book4')
-{
-  this.setState({ studentBookList: {book4:true}
-  //isBook1:!this.state.isBook1
-});}
+       studentBookList['book1']=true
+    this.setState({ studentBookList});}
+  else if (event.target.value==='book2'){
+    studentBookList['book2']=true
+    this.setState({ studentBookList});}
+else if (event.target.value==='book3'){
+    studentBookList['book3']=true
+    this.setState({ studentBookList});}
+else if (event.target.value==='book4'){
+    studentBookList['book4']=true
+    this.setState({ studentBookList});}
 
-    this.props.onBookChanged(studentBookList['book1'],studentBookList['book2'],studentBookList['book3'],studentBookList['book4'], this.props.studentIndex)
+    this.props.onBookChanged(studentBookList)
 }
 
     

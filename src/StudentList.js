@@ -17,10 +17,10 @@ export default class StudentList extends React.Component{
             {
                 id:1,
                 name:'Frank',
-                book1:true,
+                book1:false,
                 book2:false,
                 book3:false,
-                book4:true,
+                book4:false,
             },
             {
                 id:2,
@@ -42,7 +42,7 @@ export default class StudentList extends React.Component{
             isSelected: false,
             isShowedBookList:false,
             bookList:[],
-            selectedBook:[]
+            selectedBook:[],
 };
 
        }
@@ -51,11 +51,12 @@ export default class StudentList extends React.Component{
 
         showStudentList=(event)=>{
             for (let x of this.state.student) { 
-            if(event.target.value  === x['name']){
+                if(event.target.value  === x['name']){
                 this.setState({ selectedStudent: {id:x['id'],name:x['name'],book1:x['book1'],book2:x['book2'],book3:x['book3'],book4:x['book4']},
                  isSelected:true})
-         
-             }}
+                }
+             }
+         }
             /* else if(event.target.value  ===this.student.name[1]){
                 this.setState({ selectedStudent: this.student[1],
                     isSelected:true})
@@ -72,14 +73,14 @@ export default class StudentList extends React.Component{
                 this.setState({
                     isSelected:false}) 
             }*/
-        }
-    
-        
-
         render() {
+            
            let {selectedStudent,isSelected,isShowedBookList,student,selectedBook } = this.state;
+           
             return (
+                
                 <div>
+                    
                     <label>Choose Student </label>
                     <br />
                     <select onChange={this.showStudentList}>
@@ -87,7 +88,7 @@ export default class StudentList extends React.Component{
                     <option value='Frank'>Frank</option>
                     <option value='Eric'>Eric</option>
                     <option value='Jane'>Jane</option>
-                </select>
+                    </select>
                 {isSelected &&
                         <React.Fragment>
                            <p>Name:{selectedStudent['name']}</p>
@@ -99,26 +100,16 @@ export default class StudentList extends React.Component{
                         <React.Fragment>
                             {selectedBook.map(() => {
                                 return <BL 
-                                studentName={student['name']}
-                                    studentIndex={student['id']}
                                     studentBookStatus={student}
                                     selectedStudentBookStatus={selectedStudent}
-                                    book1={selectedStudent['book1']}
-                                    book2={selectedStudent['book2']}
-                                    book3={selectedStudent['book3']}
-                                    book4={selectedStudent['book4']}
-                                    onBookChanged={(book1,book2,book3,book4,id) => {
-                                        selectedBook.book1= book1;
-                                        selectedBook.book2= book2;
-                                        selectedBook.book3= book3; 
-                                        selectedBook.book4= book4;
-                                        selectedBook.id=id;
+                                    onBookChanged={(bookList) => {
+                                        selectedBook= {id:bookList['id'],book1:bookList['book1'],book2:bookList['book2'],book3:bookList['book3'],book4:bookList['book4']}
                                     }} />
     })}
-                    <button onClick={() => {
-                            for (let a of this.state.student) { 
+                    <button onClick={()=>{
+                            for (let a of student) { 
                                     if(selectedBook['id']  === a['id']){
-                                        a=selectedBook
+                                        a={id:selectedBook['id'],name:selectedBook['name'],book1:selectedBook['book1'],book2:selectedBook['book2'],book3:selectedBook['book3'],book4:selectedBook['book4']}
                                         this.setState({a});
                                  
                                      }} 
@@ -137,11 +128,7 @@ export default class StudentList extends React.Component{
                             for (let x of this.state.student) { 
                                 if(selectedStudent['id']  === x['id']){
                                     x['book1']=selectedStudent['book1']
-                                    this.setState({x});
-                                    
-                             
-                                 }} 
-                        }}>
+                                    this.setState({x}); }}}}>
                             return
                             </button>
                             </React.Fragment>
@@ -156,10 +143,7 @@ export default class StudentList extends React.Component{
                                 for (let x of this.state.student) { 
                                     if(selectedStudent['id']  === x['id']){
                                         x['book2']=false
-                                        this.setState({x});
-                                 
-                                     }} 
-                            }}>
+                                        this.setState({x});}} }}>
                             return
                             </button>
                             </React.Fragment>
@@ -195,16 +179,11 @@ export default class StudentList extends React.Component{
                                     for (let x of this.state.student) { 
                                         if(selectedStudent['id']  === x['id']){
                                             x['book4']=false
-                                            this.setState({x});
-                                     
-                                         }} 
-                                 }
-                            }>
-                            return
-                            </button>
-                            </React.Fragment>
-                            }
-                        
+                                            this.setState({x});}}}}>return</button>
+                            
+                            </React.Fragment>}
                          </React.Fragment>
                         }
-                    </div>)}}
+                    </div>)
+                    }
+                }
