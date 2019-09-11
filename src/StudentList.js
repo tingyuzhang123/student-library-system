@@ -1,190 +1,117 @@
-import React from 'react';
-import BL from './BookLists'
+import React from "react";
+import BL from "./BookLists";
 
+export default class StudentList extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      student: {
+        'Fiona':{},
+        'Frank':{},
+        'Eric':{},
+        'Jane':{}
+      },
+      selectedStudent:{},
+      bookNumbers: {
+        'book1': 5,
+        'book2': 7,
+        'book3': 9,
+        'book4': 3,
+        'book5': 1
+      },
+      isSelected: false,
+      isShowedBookList: false
+    };
+  }
 
-export default class StudentList extends React.Component{
-    constructor(){
-        super();
-        this.state={
-           student:[{
-                id:0,
-                name:'Fiona',
-                rentBooks:{book1:true,
-                book4: true},
-                tempBooks:{}
-            },
-                {
-                id:1,
-                name:'Frank',
-                rentBooks:{book2:true,},
-                tempBooks:{}
-            },
-                {
-                id:2,
-                name:'Eric',
-                rentBooks:{book3:true},
-                tempBooks:{}
-            },
-            
-                {
-                id:3,
-                name:'Jane',
-                rentBooks:{book5:true},
-                tempBooks:{}
-            }],
-            selectedStudent:[{
-                id:null,
-                name: null,
-                rentBooks:{},
-                tempBooks:{}
-            }],
-            isSelected: false,
-            isShowedBookList:false,
-            bookList:[],
-            libraryBookNumbers:[],
-            };
-
-       }
-       
+  showStudentList = event => {
+    this.setState({ selectedStudent: event.target.value,isSelected:true });}
     
+ 
+  createStudentOptions = (studentName)=> {
+      
+      return <option key={studentName} value={studentName}>{studentName}</option>;
+    };
+ 
 
-        showStudentList=(event)=>{
-            for (let x of this.state.student) { 
-                if(event.target.value  === x['name']){
-                this.setState({ selectedStudent: {id:x['id'],name:x['name'],rentBooks:x['rentBooks'],tempBooks:x['tempBooks']},
-                 isSelected:true})
-                }
-             }
-         }
-        render() {
-            
-           let {selectedStudent,isSelected,isShowedBookList,student} = this.state;
-           
-            return (
-                
-                <div>
-                    
-                    <label>Choose Student </label>
-                    <br />
-                    <select onChange={this.showStudentList}>
-                    <option>Please select</option>
-                    <option value='Fiona'>Fiona</option>
-                    <option value='Frank'>Frank</option>
-                    <option value='Eric'>Eric</option>
-                    <option value='Jane'>Jane</option>
-                    </select>
-                {isSelected &&
-                        <React.Fragment>
-                           <p>Name:{selectedStudent['name']}</p>
-                           <button onClick={()=>{
-                            this.setState({
-                              isShowedBookList:true});
-                        }}>Borrow Book</button>
-                         {isShowedBookList &&
-                        <React.Fragment>
-                             <BL 
-                                    bookStatus={student}
-                                    selectedStudentBookStatus={selectedStudent}
-                                    onBookChanged={(bookList) => {
-                                        for (let a of student){
-                                            if (bookList['id']===a['id']){
-                                                this.setState({a:{tempBooks:bookList['tempBooks']}});}
-                                            }
-                                            this.setState({selectedStudent:{tempBooks:bookList['tempBooks']}});
-                                        }
-                                    }
-                                    onSubmitted={(rentBookList) => {
-                                        this.setState({student:{rentBooks:rentBookList.rentBooks},
-                                            selectedStudent:{rentBooks:selectedStudent.tempBooks}});
-                                        }
-                                    }/>
-                         </React.Fragment>
-                         }
-                           <p>Borrowed Book:</p>
-                           {selectedStudent.rentBooks['book1'] &&
-                           <React.Fragment>
-                           <p>Book1</p>
-                           <button onClick={() => {
-                            selectedStudent.rentBooks['book1']=false;
-                            this.setState({
-                                selectedStudent
-                            });
-                            for (let x of student) { 
-                                if(selectedStudent['id']  === x['id']){
-                                    x.rentBooks['book1']=selectedStudent.rentBooks['book1']
-                                    this.setState({x}); }}}}>
-                            return
-                            </button>
-                            </React.Fragment>
-                            }
-                            {selectedStudent.rentBooks['book2'] &&
-                           <React.Fragment>
-                           <p>Book2</p>
-                           <button onClick={() => {
-                            selectedStudent.rentBooks['book2']=false;
-                            this.setState({
-                                selectedStudent});
-                                for (let x of student) { 
-                                    if(selectedStudent['id']  === x['id']){
-                                        x.rentBooks['book2']=false
-                                        this.setState({x});}} }}>
-                            return
-                            </button>
-                            </React.Fragment>
-                            }
-                            {selectedStudent.rentBooks['book3'] &&
-                           <React.Fragment>
-                           <p>Book3</p>
-                           <button onClick={() => {
-                            selectedStudent.rentBooks['book3']=false
-                            this.setState({
-                                selectedStudent});
-                        
-                                for (let x of student) { 
-                                    if(selectedStudent['id']  === x['id']){
-                                        x.rentBooks['book3']=false
-                                        this.setState({x});
-                                 
-                                     }} 
-                             }
-                            }>
-                            return
-                            </button>
-                            </React.Fragment>
-                            }
-                            {selectedStudent.rentBooks['book4'] &&
-                           <React.Fragment>
-                           <p>Book4</p>
-                           <button onClick={() => {
-                            selectedStudent.rentBooks['book4']=false
-                            this.setState({
-                                selectedStudent});
-                                for (let x of student) { 
-                                if(selectedStudent['id']  === x['id']){
-                                x.rentBooks['book4']=false
-                                this.setState({x});}}}}>
-                                    return</button>
-                            
-                            </React.Fragment>}
-                            {selectedStudent.rentBooks['book5'] &&
-                           <React.Fragment>
-                           <p>Book5</p>
-                           <button onClick={() => {
-                            selectedStudent.rentBooks['book5']=false;
-                            this.setState({
-                                selectedStudent
-                            });
-                            for (let x of student) { 
-                                if(selectedStudent['id']  === x['id']){
-                                    x.rentBooks['book5']=selectedStudent.rentBooks['book5']
-                                    this.setState({x}); }}}}>
-                            return
-                            </button>
-                            </React.Fragment>
-                            }
-                         </React.Fragment>
-                         
+
+  render() {
+    let { selectedStudent, isSelected, isShowedBookList, student,bookNumbers } = this.state;
+
+    return (
+      <div>
+        <h2> Library </h2>
+        <label> Choose Student </label>
+        <br />
+        <select onChange={this.showStudentList}>
+          {!isSelected&&<option>Please select:</option>}
+          { Object.keys(student).map(this.createStudentOptions)}
+        </select>
+        {isSelected && (
+          <React.Fragment>
+            <button
+              onClick={() => {
+                this.setState({
+                  isShowedBookList: true
+                });
+              }}
+            >
+              Borrow Book
+            </button>
+            {isShowedBookList && (
+              <React.Fragment>
+                <BL
+                  bookNumbers={bookNumbers}
+                  selectedStudent={selectedStudent}
+                  onBookChanged={tempBookSelect => {
+                    Object.keys(tempBookSelect).map((bookName) => {
+                      const bookSelected = tempBookSelect[bookName];
+                      if (bookSelected) {
+                          if (student[selectedStudent][bookName] === undefined) {
+                              student[selectedStudent][bookName] = false;
+                          }
+                          student[selectedStudent][bookName]=true;
+                          bookNumbers[bookName]--;
+                      }
+                  });
+                  this.setState({
+                      student, bookNumbers
+                  });
+                  return null;
+              }}></BL>
+              
+              </React.Fragment>
+            )}
+            <p> Borrowed Book: </p>
+            {Object.keys(student).map(studentName => {
+              const books = student[studentName];
+                return (
+                  <React.Fragment>
+                    <span>
+                      {Object.keys(books).map((bookName) => {
+                      return <React.Fragment>
+                        {(books[bookName])&& <p>{studentName + ' borrowed: ' + bookName}
+                         <button
+                      onClick={() => {
+                        student[selectedStudent][bookName]=false;
+                        bookNumbers[bookName]++;
+                        this.setState({
+                          student, bookNumbers
+                        });
+                      
+                          }
                         }
-                    </div>)
-                    }
-                }
+                    >
+                      return
+                    </button>
+                    </p>}
+                  </React.Fragment>
+                      })}
+                      </span>
+                      </React.Fragment>);
+              })}
+     </React.Fragment>
+    )}
+    </div>
+    )}
+            }
