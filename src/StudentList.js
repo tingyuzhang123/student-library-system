@@ -6,12 +6,12 @@ export default class StudentList extends React.Component {
     super();
     this.state = {
       student: {
-        'Fiona':{},
-        'Frank':{},
-        'Eric':{},
-        'Jane':{}
+        'Fiona': {},
+        'Frank': {},
+        'Eric': {},
+        'Jane': {}
       },
-      selectedStudent:{},
+      selectedStudent: {},
       bookNumbers: {
         'book1': 5,
         'book2': 7,
@@ -25,18 +25,19 @@ export default class StudentList extends React.Component {
   }
 
   showStudentList = event => {
-    this.setState({ selectedStudent: event.target.value,isSelected:true });}
-    
- 
-  createStudentOptions = (studentName)=> {
-      
-      return <option key={studentName} value={studentName}>{studentName}</option>;
-    };
- 
+    this.setState({ selectedStudent: event.target.value, isSelected: true });
+  }
+
+
+  createStudentOptions = (studentName) => {
+
+    return <option key={studentName} value={studentName}>{studentName}</option>;
+  };
+
 
 
   render() {
-    let { selectedStudent, isSelected, isShowedBookList, student,bookNumbers } = this.state;
+    let { selectedStudent, isSelected, isShowedBookList, student, bookNumbers } = this.state;
 
     return (
       <div>
@@ -44,8 +45,8 @@ export default class StudentList extends React.Component {
         <label> Choose Student </label>
         <br />
         <select onChange={this.showStudentList}>
-          {!isSelected&&<option>Please select:</option>}
-          { Object.keys(student).map(this.createStudentOptions)}
+          {!isSelected && <option>Please select:</option>}
+          {Object.keys(student).map(this.createStudentOptions)}
         </select>
         {isSelected && (
           <React.Fragment>
@@ -63,55 +64,57 @@ export default class StudentList extends React.Component {
                 <BL
                   bookNumbers={bookNumbers}
                   selectedStudent={selectedStudent}
+                  studentBorrowedBooks={student[selectedStudent]}
                   onBookChanged={tempBookSelect => {
                     Object.keys(tempBookSelect).map((bookName) => {
                       const bookSelected = tempBookSelect[bookName];
                       if (bookSelected) {
-                          if (student[selectedStudent][bookName] === undefined) {
-                              student[selectedStudent][bookName] = false;
-                          }
-                          student[selectedStudent][bookName]=true;
-                          bookNumbers[bookName]--;
+                        if (student[selectedStudent][bookName] === undefined) {
+                          student[selectedStudent][bookName] = false;
+                        }
+                        student[selectedStudent][bookName] = true;
+                        bookNumbers[bookName]--;
                       }
-                  });
-                  this.setState({
+                    });
+                    this.setState({
                       student, bookNumbers
-                  });
-                  return null;
-              }}></BL>
-              
+                    });
+                    return null;
+                  }}></BL>
+
               </React.Fragment>
             )}
             <p> Borrowed Book: </p>
             {Object.keys(student).map(studentName => {
               const books = student[studentName];
-                return (
-                  <React.Fragment>
-                    <span>
-                      {Object.keys(books).map((bookName) => {
+              return (
+                <React.Fragment>
+                  <span>
+                    {Object.keys(books).map((bookName) => {
                       return <React.Fragment>
-                        {(books[bookName])&& <p>{studentName + ' borrowed: ' + bookName}
-                         <button
-                      onClick={() => {
-                        student[selectedStudent][bookName]=false;
-                        bookNumbers[bookName]++;
-                        this.setState({
-                          student, bookNumbers
-                        });
-                      
-                          }
-                        }
-                    >
-                      return
+                        {(books[bookName] && student[studentName][bookName]) && <p>{studentName + ' borrowed: ' + bookName}
+                          <button
+                            onClick={() => {
+                              student[studentName][bookName] = false;
+                              bookNumbers[bookName]++;
+                              this.setState({
+                                student, bookNumbers
+                              });
+
+                            }
+                            }
+                          >
+                            return
                     </button>
-                    </p>}
-                  </React.Fragment>
-                      })}
-                      </span>
-                      </React.Fragment>);
-              })}
-     </React.Fragment>
-    )}
-    </div>
-    )}
-            }
+                        </p>}
+                      </React.Fragment>
+                    })}
+                  </span>
+                </React.Fragment>);
+            })}
+          </React.Fragment>
+        )}
+      </div>
+    )
+  }
+}

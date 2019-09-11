@@ -8,6 +8,17 @@ export default class BookLists extends React.Component {
     };
   }
 
+  static getDerivedStateFromProps(props, state) {
+    if (props.selectedStudent !== state.selectedStudent) {
+      return {
+        selectedStudent: props.selectedStudent,
+        temBookNumbers: {}
+      };
+    }
+
+    return null;
+  }
+
   /*selectedBookList = event => {
     let { studentBookList, bookNumbers } = this.state;
     Object.keys(bookNumbers).map(key => {
@@ -23,65 +34,65 @@ export default class BookLists extends React.Component {
 */
   render() {
     let { temBookNumbers } = this.state;
-    const { selectedStudent, onBookChanged, bookNumbers } = this.props;
-   /*const calculateBookNumbersFromSelectedStu = (
-      bookStatus,
-      temBookNumbers,
-      bookNumbers
-    ) => {
-      let x = bookNumbers;
-      if (bookStatus.rentBooks !== undefined) {
-        return Object.keys(bookStatus.rentBooks).map(key => {
-          if (bookStatus.rentBooks[key] === true) {
-            return x[key]--, (temBookNumbers[key] = x[key]);
-          }
-        });
-      } else {
-        temBookNumbers = bookNumbers;
-      }
-    };
-
-    temBookNumbers = calculateBookNumbersFromSelectedStu(
-      bookStatus,
-      temBookNumbers,
-      bookNumbers
-    );
-*/
+    const { selectedStudent, onBookChanged, bookNumbers, studentBorrowedBooks } = this.props;
+    /*const calculateBookNumbersFromSelectedStu = (
+       bookStatus,
+       temBookNumbers,
+       bookNumbers
+     ) => {
+       let x = bookNumbers;
+       if (bookStatus.rentBooks !== undefined) {
+         return Object.keys(bookStatus.rentBooks).map(key => {
+           if (bookStatus.rentBooks[key] === true) {
+             return x[key]--, (temBookNumbers[key] = x[key]);
+           }
+         });
+       } else {
+         temBookNumbers = bookNumbers;
+       }
+     };
+ 
+     temBookNumbers = calculateBookNumbersFromSelectedStu(
+       bookStatus,
+       temBookNumbers,
+       bookNumbers
+     );
+ */
     return (
       <div>
         <h3> Book List</h3>
-        
-          {Object.keys(bookNumbers).map(bookName => {
-            if (
-              !selectedStudent[bookName]
-            ) {
-              return (
-                  <div key={bookName}>
-                  <label htmlFor={bookName}>
-                    {bookName} : {bookNumbers[bookName]}
-                  </label>
-                  <input
-                    type="checkbox"
-                    value={bookName}
-                    id={bookName}
-                    checked={temBookNumbers[bookName]}
-                    disabled={bookNumbers[bookName] <= 0}
-                    onChange={() => {
-                      temBookNumbers[bookName] = !temBookNumbers[bookName];
-                      this.setState({ temBookNumbers });
-                  }}
-                  />
-                 </div>
 
-              );
-            }
-          })}
+        {Object.keys(bookNumbers).map(bookName => {
+          if (
+            !selectedStudent[bookName]
+          ) {
+            return (
+              <div key={bookName}>
+                <label htmlFor={bookName}>
+                  {bookName} : {bookNumbers[bookName]}
+                </label>
+                <input
+                  type="checkbox"
+                  value={bookName}
+                  id={bookName}
+                  checked={temBookNumbers[bookName]}
+                  disabled={bookNumbers[bookName] <= 0 || studentBorrowedBooks[bookName]}
+                  onChange={() => {
+                    temBookNumbers[bookName] = !temBookNumbers[bookName];
+                    this.setState({ temBookNumbers });
+                  }}
+                />
+              </div>
+
+            );
+          }
+        })}
 
         <button
           onClick={() => {
-             onBookChanged(temBookNumbers);
-             this.setState({ tempBookNumbers: {} });
-              }}>
+            onBookChanged(temBookNumbers);
+            this.setState({ tempBookNumbers: {} });
+          }}>
           Submit
         </button>
       </div>
