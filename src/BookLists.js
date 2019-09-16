@@ -7,7 +7,16 @@ export default class BookLists extends React.Component {
       temBookNumbers: {}
     };
   }
+  static getDerivedStateFromProps(props, state) {
+    if (props.selectedStudent !== state.selectedStudent) {
+      return {
+        selectedStudent: props.selectedStudent,
+        temBookNumbers: {}
+      };
+    }
 
+    return null;
+  }
   /*selectedBookList = event => {
     let { studentBookList, bookNumbers } = this.state;
     Object.keys(bookNumbers).map(key => {
@@ -23,7 +32,7 @@ export default class BookLists extends React.Component {
 */
   render() {
     let { temBookNumbers } = this.state;
-    const { selectedStudent, onBookChanged, bookNumbers } = this.props;
+    const { selectedStudent, onBookChanged, bookNumbers,studentBorrowedBooks } = this.props;
    /*const calculateBookNumbersFromSelectedStu = (
       bookStatus,
       temBookNumbers,
@@ -65,7 +74,7 @@ export default class BookLists extends React.Component {
                     value={bookName}
                     id={bookName}
                     checked={temBookNumbers[bookName]}
-                    disabled={bookNumbers[bookName] <= 0}
+                    disabled={bookNumbers[bookName] <= 0 || studentBorrowedBooks[bookName]}
                     onChange={() => {
                       temBookNumbers[bookName] = !temBookNumbers[bookName];
                       this.setState({ temBookNumbers });

@@ -63,6 +63,7 @@ export default class StudentList extends React.Component {
                 <BL
                   bookNumbers={bookNumbers}
                   selectedStudent={selectedStudent}
+                  studentBorrowedBooks={student[selectedStudent]}
                   onBookChanged={tempBookSelect => {
                     Object.keys(tempBookSelect).map((bookName) => {
                       const bookSelected = tempBookSelect[bookName];
@@ -83,14 +84,14 @@ export default class StudentList extends React.Component {
               </React.Fragment>
             )}
             <p> Borrowed Book: </p>
-            {Object.keys(student).map(studentName => {
-              const books = student[studentName];
-                return (
+            {/* {Object.keys(student).map(studentName => { */}
+              {/* const books = student[selectedStudent]; */}
+                {/* return ( */}
                   <React.Fragment>
                     <span>
-                      {Object.keys(books).map((bookName) => {
+                      {Object.keys(student[selectedStudent]).map((bookName) => {
                       return <React.Fragment>
-                        {(books[bookName])&& <p>{studentName + ' borrowed: ' + bookName}
+                        {(student[selectedStudent][bookName])&& <p>{selectedStudent + ' borrowed: ' + bookName}
                          <button
                       onClick={() => {
                         student[selectedStudent][bookName]=false;
@@ -108,8 +109,7 @@ export default class StudentList extends React.Component {
                   </React.Fragment>
                       })}
                       </span>
-                      </React.Fragment>);
-              })}
+                      </React.Fragment>
      </React.Fragment>
     )}
     </div>
